@@ -16,10 +16,25 @@ def Wagner_2018_two_condition(test=False):
 def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
     # Load UMI data
     adata = load_zebrafish_chd_tyr(test=test)
+
     # Simulate experimental conditions with N different seeds
-    for i in range(n_simulations):
-        seed = 42 + i
-        simulate_treatment(adata, seed=seed, n_conditions=2, n_replicates=3)
+    # Determine which seed corresponds to which effect size
+    seeds = np.arange(20)
+    effect_size = {}
+    for seed in seeds:
+        if seed < 10:
+            effect_size[seed] = 0.6
+        elif seed < 20:
+            effect_size = 1
+
+    for seed in range(seeds):
+        curr_effect_size = effect_size[seed]
+        simulate_treatment(
+            adata,
+            seed=seed,
+            n_conditions=2,
+            n_replicates=3,
+            effect_size=curr_effect_size)
         obs_simulation = ["condition", "replicate", "sample"]
         adata.obs.columns = [
             "{x}_seed{s}".format(x=x, s=seed) if x in obs_simulation else x
