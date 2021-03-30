@@ -199,7 +199,9 @@ def simulate_treatment(
     # Create one PDF for each condition
     condition_probability = []
     for condition in conditions:
-        pdf = _create_pdf(data_embedding[:, :n_components]).reshape(-1, 1)
+        pdf = _create_pdf_from_embedding(data_embedding[:, :n_components]).reshape(
+            -1, 1
+        )
         condition_probability.append(pdf)
     condition_probability = np.concatenate(condition_probability, axis=1)
 
