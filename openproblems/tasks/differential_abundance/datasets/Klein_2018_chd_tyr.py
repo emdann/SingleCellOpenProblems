@@ -27,6 +27,6 @@ def Klein_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
         for u in uns_simulation:
             adata.uns['{u}_seed{s}'.format(u=u, s=seed)] = adata.uns[u]
         ## Save simulation params used for metrics
-        max_effect_size = (adata.obsm["ground_truth_probability_seed43"] - 0.5).max().max()
+        max_effect_size = (adata.obsm["ground_truth_probability_seed{s}".format(s=seed)] - 0.5).max().max()
         adata.uns["DA_simulation_params_seed{s}".format(s=seed)] = {"max_effect_size":max_effect_size}
     return adata
