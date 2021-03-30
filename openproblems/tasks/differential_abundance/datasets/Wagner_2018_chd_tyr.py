@@ -1,10 +1,10 @@
-from ....data.Klein_2018_zebrafish_embryo import load_zebrafish_chd_tyr
+from ....data.Wagner_2018_zebrafish_embryo_CRISPR import load_zebrafish_chd_tyr
 from ....tools.decorators import dataset
 from .utils import simulate_treatment
 
 
 @dataset("Chd/tyr CRISPR perturbation dataset")
-def Klein_2018_chd_tyr_data(test=False):
+def Wagner_2018_two_condition(test=False):
     # Load UMI data
     adata = load_zebrafish_chd_tyr(test=test)
     # Simulate experiment as a combination of PC dimensions
@@ -13,7 +13,7 @@ def Klein_2018_chd_tyr_data(test=False):
     return adata
 
 @dataset("Chd/tyr CRISPR perturbation dataset - multiple simulations")
-def Klein_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
+def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
     # Load UMI data
     adata = load_zebrafish_chd_tyr(test=test)
     # Simulate experimental conditions with N different seeds
