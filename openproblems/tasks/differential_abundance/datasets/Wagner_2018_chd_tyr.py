@@ -12,47 +12,36 @@ def Wagner_2018_two_condition(test=False):
 
     return adata
 
-
 @dataset("Chd/tyr CRISPR perturbation dataset - multiple simulations")
 def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
     # Load UMI data
     adata = load_zebrafish_chd_tyr(test=test)
 
     # Simulate experimental conditions with N different seeds
-<<<<<<< HEAD
     # Determine which seed corresponds to which effect size
     seeds = np.arange(20)
     effect_size = {}
     for seed in seeds:
         if seed < 10:
+            # This is a small effect size
             effect_size[seed] = 0.6
         elif seed < 20:
+            # This is a large effect size
             effect_size = 1
+    # Save the map from seed to effect size in `uns`
+    adata.uns['effect_size_by_seed'] = effect_size
 
+    # Iterate through seeds
     for seed in range(seeds):
-        curr_effect_size = effect_size[seed]
+        # Simulate a treatment effect across the dataset
         simulate_treatment(
             adata,
             seed=seed,
             n_conditions=2,
             n_replicates=3,
-            effect_size=curr_effect_size)
-=======
-    for i in range(n_simulations):
-        seed = 0 + i
-        if seed < 5:
-            effect_size = 0.6
-        else:
-            effect_size = 0.8
-        simulate_treatment(
-            adata, seed=seed, n_conditions=2, n_replicates=3, effect_size=effect_size
-        )
->>>>>>> 712b0a9a68b28ff399ba6dfc8585980b3d728b67
-        obs_simulation = ["condition", "replicate", "sample"]
-        adata.obs.columns = [
-            "{x}_seed{s}".format(x=x, s=seed) if x in obs_simulation else x
-            for x in adata.obs.columns
-        ]
+            effect_size=adata.uns['effect_size_by_seed'][seed],
+            seed=seed)
+
         adata.obsm["ground_truth_probability_seed{s}".format(s=seed)] = adata.obsm[
             "ground_truth_probability"
         ]
@@ -67,7 +56,12 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
         for u in uns_simulation:
             adata.uns["{u}_seed{s}".format(u=u, s=seed)] = adata.uns[u]
         # Save simulation params used for metrics
+        max_effect_size = (
+            (adata.obsm["ground_truth_probability_seed{s}".format(s=seed)] - 0.5)
+            .max()
+            .max()
+        )
         adata.uns["DA_simulation_params_seed{s}".format(s=seed)] = {
-            "max_effect_size": effect_size
+            "max_effect_size": max_effect_size
         }
     return adata
