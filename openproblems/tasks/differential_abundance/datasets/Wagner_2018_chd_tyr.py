@@ -63,4 +63,6 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
         adata.uns["DA_simulation_params_seed{s}".format(s=seed)] = {
             "max_effect_size": max_effect_size
         }
+    ## Save list of simulation seeds
+    adata.uns["seeds_DA_simulation"] = seeds
     return adata
