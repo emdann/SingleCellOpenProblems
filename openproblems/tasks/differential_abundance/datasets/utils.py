@@ -144,7 +144,7 @@ def simulate_treatment(
     adata: sc.AnnData,
     n_conditions: int = 2,
     n_replicates: int = 2,
-    effect_size: float=1,
+    effect_size: float = 1,
     embedding_name: str = "X_pca",
     n_components: int = 10,
     seed: [int, np.random.RandomState] = None,
