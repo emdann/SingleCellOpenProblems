@@ -21,26 +21,27 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
     # Simulate experimental conditions with N different seeds
     # Determine which seed corresponds to which effect size
     seeds = np.arange(n_simulations)
-    effect_size = {}
+    # Save the map from seed to effect size in `uns`
+    adata.uns['seed_info'] = {}
     for seed in seeds:
         if seed < 10:
-            effect_size[seed] = 0.6
+            # This is a small effect size
+            adata.uns['seed_info'][seed] = {'effect_size': 0.6}
         elif seed < 20:
-            effect_size = 1
+            # This is a large effect size
+            adata.uns['seed_info'][seed] = {'effect_size': 1}
 
+    # Iterate through seeds
     for seed in range(seeds):
-        curr_effect_size = effect_size[seed]
+        # Simulate a treatment effect across the dataset
         simulate_treatment(
             adata,
             seed=seed,
             n_conditions=2,
             n_replicates=3,
-            effect_size=curr_effect_size)
-        obs_simulation = ["condition", "replicate", "sample"]
-        adata.obs.columns = [
-            "{x}_seed{s}".format(x=x, s=seed) if x in obs_simulation else x
-            for x in adata.obs.columns
-        ]
+            effect_size=adata.uns['seed_info'][seed]['effect_size'],
+            seed=seed)
+
         adata.obsm["ground_truth_probability_seed{s}".format(s=seed)] = adata.obsm[
             "ground_truth_probability"
         ]
@@ -55,9 +56,14 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
         for u in uns_simulation:
             adata.uns["{u}_seed{s}".format(u=u, s=seed)] = adata.uns[u]
         # Save simulation params used for metrics
+        max_effect_size = (
+            (adata.obsm["ground_truth_probability_seed{s}".format(s=seed)] - 0.5)
+            .max()
+            .max()
+        )
         adata.uns["DA_simulation_params_seed{s}".format(s=seed)] = {
-            "max_effect_size": effect_size
+            "max_effect_size": max_effect_size
         }
-    ## Save list of simulation seeds
+    # Save list of simulation seeds
     adata.uns["seeds_DA_simulation"] = seeds
     return adata
