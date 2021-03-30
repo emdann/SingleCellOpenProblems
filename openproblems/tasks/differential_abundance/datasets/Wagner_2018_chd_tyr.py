@@ -20,16 +20,15 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
     # Simulate experimental conditions with N different seeds
     # Determine which seed corresponds to which effect size
     seeds = np.arange(n_simulations)
-    effect_size = {}
+    # Save the map from seed to effect size in `uns`
+    adata.uns['seed_info'] = {}
     for seed in seeds:
         if seed < 10:
             # This is a small effect size
-            effect_size[seed] = 0.6
+            adata.uns['seed_info'][seed] = {'effect_size' : 0.6}
         elif seed < 20:
             # This is a large effect size
-            effect_size = 1
-    # Save the map from seed to effect size in `uns`
-    adata.uns['effect_size_by_seed'] = effect_size
+            adata.uns['seed_info'][seed] = {'effect_size' : 1 }
 
     # Iterate through seeds
     for seed in range(seeds):
@@ -39,7 +38,7 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
             seed=seed,
             n_conditions=2,
             n_replicates=3,
-            effect_size=adata.uns['effect_size_by_seed'][seed],
+            effect_size=adata.uns['seed_info'][seed]['effect_size'],
             seed=seed)
 
         adata.obsm["ground_truth_probability_seed{s}".format(s=seed)] = adata.obsm[
