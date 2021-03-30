@@ -13,13 +13,13 @@ def Wagner_2018_two_condition(test=False):
     return adata
 
 @dataset("Chd/tyr CRISPR perturbation dataset - multiple simulations")
-def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
+def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
     # Load UMI data
     adata = load_zebrafish_chd_tyr(test=test)
 
     # Simulate experimental conditions with N different seeds
     # Determine which seed corresponds to which effect size
-    seeds = np.arange(20)
+    seeds = np.arange(n_simulations)
     effect_size = {}
     for seed in seeds:
         if seed < 10:
