@@ -1,10 +1,10 @@
-from ....data.Wagner_2018_zebrafish_embryo_CRISPR import load_zebrafish_chd_tyr
+from ....data.Klein_2018_zebrafish_embryo import load_zebrafish_chd_tyr
 from ....tools.decorators import dataset
 from .utils import simulate_treatment
 
 
 @dataset("Chd/tyr CRISPR perturbation dataset")
-def Wagner_2018_two_condition(test=False):
+def Klein_2018_chd_tyr_data(test=False):
     # Load UMI data
     adata = load_zebrafish_chd_tyr(test=test)
     # Simulate experiment as a combination of PC dimensions
@@ -14,30 +14,10 @@ def Wagner_2018_two_condition(test=False):
 
 
 @dataset("Chd/tyr CRISPR perturbation dataset - multiple simulations")
-def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
+def Klein_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
     # Load UMI data
     adata = load_zebrafish_chd_tyr(test=test)
-
     # Simulate experimental conditions with N different seeds
-<<<<<<< HEAD
-    # Determine which seed corresponds to which effect size
-    seeds = np.arange(20)
-    effect_size = {}
-    for seed in seeds:
-        if seed < 10:
-            effect_size[seed] = 0.6
-        elif seed < 20:
-            effect_size = 1
-
-    for seed in range(seeds):
-        curr_effect_size = effect_size[seed]
-        simulate_treatment(
-            adata,
-            seed=seed,
-            n_conditions=2,
-            n_replicates=3,
-            effect_size=curr_effect_size)
-=======
     for i in range(n_simulations):
         seed = 0 + i
         if seed < 5:
@@ -47,7 +27,6 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
         simulate_treatment(
             adata, seed=seed, n_conditions=2, n_replicates=3, effect_size=effect_size
         )
->>>>>>> 712b0a9a68b28ff399ba6dfc8585980b3d728b67
         obs_simulation = ["condition", "replicate", "sample"]
         adata.obs.columns = [
             "{x}_seed{s}".format(x=x, s=seed) if x in obs_simulation else x
@@ -66,8 +45,10 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=10):
         ]
         for u in uns_simulation:
             adata.uns["{u}_seed{s}".format(u=u, s=seed)] = adata.uns[u]
-        # Save simulation params used for metrics
+        # Save simulation params for metrics
         adata.uns["DA_simulation_params_seed{s}".format(s=seed)] = {
             "max_effect_size": effect_size
         }
+    # Save list of simulation seeds
+    adata.uns["DA_simulation_seeds"] = list(range(n_simulations))
     return adata
