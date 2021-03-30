@@ -144,6 +144,7 @@ def simulate_treatment(
     adata: sc.AnnData,
     n_conditions: int = 2,
     n_replicates: int = 2,
+    effect_size: float=1,
     embedding_name: str = "X_pca",
     n_components: int = 10,
     seed: [int, np.random.RandomState] = None,
@@ -161,6 +162,8 @@ def simulate_treatment(
         Number of conditions to simulate
     n_replicates : int, optional, default: 2
         Number of replicates to simulate
+    effect_size: float, optional, default: 1
+        Effect size of the perturbation
     embedding_name : str, optional, default: "X_pca"
         Name of embedding in adata.obsm to use to simulate differential abundance
     n_components : int, optional, default: 10
