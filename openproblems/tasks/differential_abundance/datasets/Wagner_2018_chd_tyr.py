@@ -19,7 +19,6 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
     adata = load_zebrafish_chd_tyr(test=test)
 
     # Simulate experimental conditions with N different seeds
-<< << << < HEAD
     # Determine which seed corresponds to which effect size
     seeds = np.arange(n_simulations)
     effect_size = {}
