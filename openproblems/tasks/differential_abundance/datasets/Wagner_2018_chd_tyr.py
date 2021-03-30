@@ -12,6 +12,7 @@ def Wagner_2018_two_condition(test=False):
 
     return adata
 
+
 @dataset("Chd/tyr CRISPR perturbation dataset - multiple simulations")
 def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
     # Load UMI data
@@ -25,10 +26,10 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
     for seed in seeds:
         if seed < 10:
             # This is a small effect size
-            adata.uns['seed_info'][seed] = {'effect_size' : 0.6}
+            adata.uns['seed_info'][seed] = {'effect_size': 0.6}
         elif seed < 20:
             # This is a large effect size
-            adata.uns['seed_info'][seed] = {'effect_size' : 1 }
+            adata.uns['seed_info'][seed] = {'effect_size': 1}
 
     # Iterate through seeds
     for seed in range(seeds):
@@ -63,6 +64,6 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
         adata.uns["DA_simulation_params_seed{s}".format(s=seed)] = {
             "max_effect_size": max_effect_size
         }
-    ## Save list of simulation seeds
+    # Save list of simulation seeds
     adata.uns["seeds_DA_simulation"] = seeds
     return adata
