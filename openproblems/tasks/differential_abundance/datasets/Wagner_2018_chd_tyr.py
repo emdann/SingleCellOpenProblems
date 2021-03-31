@@ -8,8 +8,7 @@ def Wagner_2018_two_condition(test=False):
     # Load UMI data
     adata = load_zebrafish_chd_tyr(test=test)
     # Simulate experiment as a combination of PC dimensions
-    simulate_treatment(adata, n_conditions=3, n_replicates=2)
-
+    simulate_treatment(adata, n_conditions=2, n_replicates=3)
     return adata
 
 
