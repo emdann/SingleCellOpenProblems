@@ -16,3 +16,4 @@ tidymodels@0.1.2
 reticulate@1.18
 MarioniLab/miloR
 docopt@0.7.1
+KlugerLab/DAseq
