@@ -2,6 +2,8 @@ from ....tools.conversion import r_function
 from ....tools.decorators import method
 from ....tools.utils import check_version
 
+import pandas as pd
+
 _milo = r_function("milo.R")
 
 @method(
