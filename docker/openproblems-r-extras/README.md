@@ -13,6 +13,7 @@ R packages:
 * batchelor
 * sparsesvd
 * dplyr
+* miloR
 
 Python packages:
 
