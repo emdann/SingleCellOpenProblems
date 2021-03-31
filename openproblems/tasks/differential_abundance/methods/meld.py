@@ -48,3 +48,4 @@ def run_meld(adata):
 
     # Calculate the average
     adata.obsm["probability_estimate"] /= adata.uns["n_replicates"]
+    return adata

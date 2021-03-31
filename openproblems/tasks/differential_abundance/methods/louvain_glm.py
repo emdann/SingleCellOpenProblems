@@ -2,6 +2,8 @@ from ....tools.conversion import r_function
 from ....tools.decorators import method
 from ....tools.utils import check_version
 
+import scanpy as sc
+
 _louvain_glm = r_function("louvain_glm.R")
 
 
@@ -19,5 +21,10 @@ def run_louvain_glm(adata):
     adata.obsm["ground_truth_probability"] = adata.obsm[
         "ground_truth_probability"
     ].values
+    # Run louvain clustering
+    k = adata.uns["n_samples"] * 5
+    sc.pp.neighbors(adata, n_neighbors=k)
+    sc.tl.louvain(adata)
+    # Test with Poisson GLM
     adata = _louvain_glm(adata)
     return adata
