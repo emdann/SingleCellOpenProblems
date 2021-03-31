@@ -36,7 +36,6 @@ def Wagner_2018_chd_tyr_data_n_simulations(test=False, n_simulations=20):
         # Simulate a treatment effect across the dataset
         simulate_treatment(
             adata,
-            seed=seed,
             n_conditions=2,
             n_replicates=3,
             effect_size=adata.uns['seed_info'][seed]['effect_size'],
