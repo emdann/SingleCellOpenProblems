@@ -13,7 +13,7 @@ condition_col = "condition"
 design_df <- as.tibble(colData(sce)[c(sample_col, condition_col)]) %>%
     distinct() %>%
     column_to_rownames(sample_col)
-design <- formula(paste('~', condition_col, collapse = ' '))  
+design <- formula(paste('~', condition_col, collapse = ' '))
 
 ## Build graph neighbourhoods
 k <- metadata(sce)$n_samples * 5
@@ -29,7 +29,7 @@ milo <- calcNhoodDistance(milo, d=d, reduced.dim = "PCA")
 DA_results <- testNhoods(milo, design = design, design.df = design_df)
 
 ## Convert nhood FC to single-cell probability
-nhood_p <- exp(DA_results$logFC) / (exp(DA_results$logFC) + 1) 
+nhood_p <- exp(DA_results$logFC) / (exp(DA_results$logFC) + 1)
 cell_p_cond1 <- milo@nhoods %*% nhood_p
 cell_p_cond2 <- 1 - cell_p_cond1
 prob_mat <- cbind(cell_p_cond1, cell_p_cond2)

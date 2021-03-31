@@ -4,6 +4,7 @@ from ....tools.utils import check_version
 
 _milo = r_function("milo.R")
 
+
 @method(
     method_name="Milo",
     paper_name="Milo: differential abundance testing on single-cell data using k-NN graphs",
@@ -20,6 +21,14 @@ def run_milo(adata):
     ].values
     adata = _milo(adata)
     # Reconvert probabilities to DataFrames
-    adata.obsm["ground_truth_probability"] = pd.DataFrame(adata.obsm["ground_truth_probability"], index=adata.obs_names, columns=adata.uns["conditions"])
-    adata.obsm["probability_estimate"] = pd.DataFrame(adata.obsm["probability_estimate"], index=adata.obs_names, columns=adata.uns["conditions"])
+    adata.obsm["ground_truth_probability"] = pd.DataFrame(
+        adata.obsm["ground_truth_probability"],
+        index=adata.obs_names,
+        columns=adata.uns["conditions"],
+    )
+    adata.obsm["probability_estimate"] = pd.DataFrame(
+        adata.obsm["probability_estimate"],
+        index=adata.obs_names,
+        columns=adata.uns["conditions"],
+    )
     return adata
