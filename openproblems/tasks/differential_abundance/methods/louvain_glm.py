@@ -3,6 +3,7 @@ from ....tools.decorators import method
 from ....tools.utils import check_version
 
 import scanpy as sc
+import pandas as pd
 
 _louvain_glm = r_function("louvain_glm.R")
 
