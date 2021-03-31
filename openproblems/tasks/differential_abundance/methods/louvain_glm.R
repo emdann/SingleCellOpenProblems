@@ -18,6 +18,7 @@ design <- formula(paste('Freq ~', condition_col, "+ offset(log(N_s))", collapse 
 condition_vec <- colData(sce)[[condition_col]]
 sample_labels <- colData(sce)[[sample_col]]
 clust.df <- data.frame("cell_id"=colnames(sce), "Louvain.Clust"=colData(sce)[['louvain']])
+
 clust.df$Sample <- sample_labels
 clust.df$Condition <- condition_vec
 
