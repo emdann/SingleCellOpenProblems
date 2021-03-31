@@ -6,6 +6,7 @@
 library(SingleCellExperiment)
 library(miloR)
 library(tidyverse)
+library(Matrix)
 
 # Make design matrix
 sample_col = "sample"
@@ -31,6 +32,7 @@ DA_results <- testNhoods(milo, design = design, design.df = design_df)
 ## Convert nhood FC to single-cell probability
 nhood_p <- exp(DA_results$logFC) / (exp(DA_results$logFC) + 1) 
 cell_p_cond1 <- milo@nhoods %*% nhood_p
+cell_p_cond1 <- cell_p_cond1 / rowSums(milo@nhoods)
 cell_p_cond2 <- 1 - cell_p_cond1
 prob_mat <- cbind(cell_p_cond1, cell_p_cond2)
 reducedDim(sce, "probability_estimate") <- as.matrix(prob_mat)
