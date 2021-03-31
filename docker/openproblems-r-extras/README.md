@@ -14,6 +14,7 @@ R packages:
 * sparsesvd
 * dplyr
 * miloR
+* DA-seq
 
 Python packages:
 
