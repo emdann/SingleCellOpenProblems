@@ -27,4 +27,7 @@ def run_louvain_glm(adata):
     sc.tl.louvain(adata)
     # Test with Poisson GLM
     adata = _louvain_glm(adata)
+    # Reconvert probabilities to DataFrames
+    adata.obsm["ground_truth_probability"] = pd.DataFrame(adata.obsm["ground_truth_probability"], index=adata.obs_names, columns=adata.uns["conditions"])
+    adata.obsm["probability_estimate"] = pd.DataFrame(adata.obsm["probability_estimate"], index=adata.obs_names, columns=adata.uns["conditions"])
     return adata
